@@ -283,6 +283,8 @@ renderCUDA(
 	float* __restrict__ final_T,
 	uint32_t* __restrict__ n_contrib,
 	const float* __restrict__ bg_color,
+	const float* __restrict__ bg_rgb,
+	const float* __restrict__ bg_depth,
 	float* __restrict__ out_color,
 	const float* __restrict__ depths,
 	float* __restrict__ invdepth)
@@ -360,6 +362,11 @@ renderCUDA(
 			float alpha = min(0.99f, con_o.w * exp(power));
 			if (alpha < 1.0f / 255.0f)
 				continue;
+
+			// Depth test: only accumulate if Gaussian is closer than background depth
+			if (depths[collected_id[j]] > bg_depth[pix_id])
+				continue;
+
 			float test_T = T * (1 - alpha);
 			if (test_T < 0.0001f)
 			{
@@ -389,8 +396,7 @@ renderCUDA(
 		final_T[pix_id] = T;
 		n_contrib[pix_id] = last_contributor;
 		for (int ch = 0; ch < CHANNELS; ch++)
-			out_color[ch * H * W + pix_id] = C[ch] + T * bg_color[ch];
-
+			out_color[ch * H * W + pix_id] = C[ch] + T * bg_rgb[ch * H * W + pix_id];
 		if (invdepth)
 		invdepth[pix_id] = expected_invdepth;// 1. / (expected_depth + T * 1e3);
 	}
@@ -407,6 +413,8 @@ void FORWARD::render(
 	float* final_T,
 	uint32_t* n_contrib,
 	const float* bg_color,
+	const float* bg_rgb,
+	const float* bg_depth,
 	float* out_color,
 	float* depths,
 	float* depth)
@@ -421,6 +429,8 @@ void FORWARD::render(
 		final_T,
 		n_contrib,
 		bg_color,
+		bg_rgb,
+		bg_depth,
 		out_color,
 		depths, 
 		depth);
