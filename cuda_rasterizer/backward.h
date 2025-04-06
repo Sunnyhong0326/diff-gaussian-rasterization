@@ -28,6 +28,7 @@ namespace BACKWARD
 		const float* bg_color,
 		const float* bg_rgb,
 		const float* bg_depth,
+		const float bg_delta,
 		const float2* means2D,
 		const float4* conic_opacity,
 		const float* colors,

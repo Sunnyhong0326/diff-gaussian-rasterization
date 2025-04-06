@@ -61,6 +61,7 @@ class _RasterizeGaussians(torch.autograd.Function):
             raster_settings.bg,
             raster_settings.bg_rgb,
             raster_settings.bg_depth,
+            raster_settings.bg_delta, # This can set as scene scale * delta 
             means3D,
             colors_precomp,
             opacities,
@@ -152,6 +153,7 @@ class GaussianRasterizationSettings(NamedTuple):
     bg : torch.Tensor
     bg_rgb : torch.Tensor
     bg_depth : torch.Tensor
+    bg_delta: float
     scale_modifier : float
     viewmatrix : torch.Tensor
     projmatrix : torch.Tensor
