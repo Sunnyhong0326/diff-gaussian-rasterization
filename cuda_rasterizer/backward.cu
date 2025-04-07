@@ -405,6 +405,8 @@ __global__ void preprocessCUDA(
 	const glm::vec3* scales,
 	const glm::vec4* rotations,
 	const float scale_modifier,
+	const float near_plane,
+	const float far_plane,
 	const float* proj,
 	const glm::vec3* campos,
 	const float3* dL_dmean2D,
@@ -663,6 +665,8 @@ void BACKWARD::preprocess(
 	float* dL_dsh,
 	glm::vec3* dL_dscale,
 	glm::vec4* dL_drot,
+	float near_plane,
+	float far_plane,
 	bool antialiasing)
 {
 	// Propagate gradients for the path of 2D conic matrix computation. 
@@ -699,6 +703,8 @@ void BACKWARD::preprocess(
 		(glm::vec3*)scales,
 		(glm::vec4*)rotations,
 		scale_modifier,
+		near_plane,
+		far_plane,
 		projmatrix,
 		campos,
 		(float3*)dL_dmean2D,

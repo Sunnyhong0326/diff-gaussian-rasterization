@@ -52,6 +52,8 @@ RasterizeGaussiansCUDA(
 	const int degree,
 	const torch::Tensor& campos,
 	const bool prefiltered,
+	const float near_plane,
+	const float far_plane,
 	const bool antialiasing,
 	const bool debug)
 {
@@ -114,6 +116,8 @@ RasterizeGaussiansCUDA(
 		tan_fovx,
 		tan_fovy,
 		prefiltered,
+		near_plane,
+		far_plane,
 		out_color.contiguous().data<float>(),
 		out_invdepthptr,
 		antialiasing,
@@ -147,6 +151,8 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor, torch::Te
 	const int R,
 	const torch::Tensor& binningBuffer,
 	const torch::Tensor& imageBuffer,
+	const float near_plane,
+	const float far_plane,
 	const bool antialiasing,
 	const bool debug)
 {
@@ -215,6 +221,8 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor, torch::Te
 	  dL_dsh.contiguous().data<float>(),
 	  dL_dscales.contiguous().data<float>(),
 	  dL_drotations.contiguous().data<float>(),
+	  near_plane,
+	  far_plane,
 	  antialiasing,
 	  debug);
   }
@@ -225,7 +233,10 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor, torch::Te
 torch::Tensor markVisible(
 		torch::Tensor& means3D,
 		torch::Tensor& viewmatrix,
-		torch::Tensor& projmatrix)
+		torch::Tensor& projmatrix,
+		const float near_plane,
+		const float far_plane
+	)
 { 
   const int P = means3D.size(0);
   
@@ -237,7 +248,10 @@ torch::Tensor markVisible(
 		means3D.contiguous().data<float>(),
 		viewmatrix.contiguous().data<float>(),
 		projmatrix.contiguous().data<float>(),
-		present.contiguous().data<bool>());
+		near_plane,
+		far_plane,
+		present.contiguous().data<bool>()
+	);
   }
   
   return present;

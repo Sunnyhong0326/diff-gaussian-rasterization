@@ -76,6 +76,8 @@ class _RasterizeGaussians(torch.autograd.Function):
             raster_settings.sh_degree,
             raster_settings.campos,
             raster_settings.prefiltered,
+            raster_settings.near_plane,
+            raster_settings.far_plane,
             raster_settings.antialiasing,
             raster_settings.debug
         )
@@ -120,6 +122,8 @@ class _RasterizeGaussians(torch.autograd.Function):
                 num_rendered,
                 binningBuffer,
                 imgBuffer,
+                raster_settings.near_plane,
+                raster_settings.far_plane,
                 raster_settings.antialiasing,
                 raster_settings.debug)
 
@@ -152,6 +156,8 @@ class GaussianRasterizationSettings(NamedTuple):
     sh_degree : int
     campos : torch.Tensor
     prefiltered : bool
+    near_plane: float
+    far_plane: float
     debug : bool
     antialiasing : bool
 

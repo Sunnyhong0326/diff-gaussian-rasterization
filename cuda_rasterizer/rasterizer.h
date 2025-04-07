@@ -26,6 +26,8 @@ namespace CudaRasterizer
 			float* means3D,
 			float* viewmatrix,
 			float* projmatrix,
+			float near_plane,
+			float far_plane,
 			bool* present);
 
 		static int forward(
@@ -48,6 +50,8 @@ namespace CudaRasterizer
 			const float* cam_pos,
 			const float tan_fovx, float tan_fovy,
 			const bool prefiltered,
+			const float near_plane,
+			const float far_plane,
 			float* out_color,
 			float* depth,
 			bool antialiasing,
@@ -86,6 +90,8 @@ namespace CudaRasterizer
 			float* dL_dsh,
 			float* dL_dscale,
 			float* dL_drot,
+			float near_plane,
+			float far_plane,
 			bool antialiasing,
 			bool debug);
 	};

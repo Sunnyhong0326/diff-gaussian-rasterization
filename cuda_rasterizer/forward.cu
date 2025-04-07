@@ -174,6 +174,8 @@ __global__ void preprocessCUDA(int P, int D, int M,
 	const dim3 grid,
 	uint32_t* tiles_touched,
 	bool prefiltered,
+	float near_plane,
+	float far_plane,
 	bool antialiasing)
 {
 	auto idx = cg::this_grid().thread_rank();
@@ -185,11 +187,10 @@ __global__ void preprocessCUDA(int P, int D, int M,
 	radii[idx] = 0;
 	tiles_touched[idx] = 0;
 
-	// Perform near culling, quit if outside.
+	// Perform near & far culling, quit if outside.
 	float3 p_view;
-	if (!in_frustum(idx, orig_points, viewmatrix, projmatrix, prefiltered, p_view))
+	if (!in_frustum(idx, orig_points, viewmatrix, projmatrix, prefiltered, near_plane, far_plane, p_view))
 		return;
-
 	// Transform point by projecting
 	float3 p_orig = { orig_points[3 * idx], orig_points[3 * idx + 1], orig_points[3 * idx + 2] };
 	float4 p_hom = transformPoint4x4(p_orig, projmatrix);
@@ -451,6 +452,8 @@ void FORWARD::preprocess(int P, int D, int M,
 	const dim3 grid,
 	uint32_t* tiles_touched,
 	bool prefiltered,
+	const float near_plane,
+	const float far_plane,
 	bool antialiasing)
 {
 	preprocessCUDA<NUM_CHANNELS> << <(P + 255) / 256, 256 >> > (
@@ -479,6 +482,8 @@ void FORWARD::preprocess(int P, int D, int M,
 		grid,
 		tiles_touched,
 		prefiltered,
+		near_plane,
+		far_plane,
 		antialiasing
 		);
 }

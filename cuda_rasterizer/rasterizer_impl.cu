@@ -55,6 +55,8 @@ __global__ void checkFrustum(int P,
 	const float* orig_points,
 	const float* viewmatrix,
 	const float* projmatrix,
+	float near_plane,
+	float far_plane,
 	bool* present)
 {
 	auto idx = cg::this_grid().thread_rank();
@@ -62,7 +64,7 @@ __global__ void checkFrustum(int P,
 		return;
 
 	float3 p_view;
-	present[idx] = in_frustum(idx, orig_points, viewmatrix, projmatrix, false, p_view);
+	present[idx] = in_frustum(idx, orig_points, viewmatrix, projmatrix, false, near_plane, far_plane, p_view);
 }
 
 // Generates one key/value pair for all Gaussian / tile overlaps. 
@@ -143,12 +145,15 @@ void CudaRasterizer::Rasterizer::markVisible(
 	float* means3D,
 	float* viewmatrix,
 	float* projmatrix,
+	float near_plane,
+	float far_plane,
 	bool* present)
 {
 	checkFrustum << <(P + 255) / 256, 256 >> > (
 		P,
 		means3D,
 		viewmatrix, projmatrix,
+		near_plane, far_plane,
 		present);
 }
 
@@ -215,6 +220,8 @@ int CudaRasterizer::Rasterizer::forward(
 	const float* cam_pos,
 	const float tan_fovx, float tan_fovy,
 	const bool prefiltered,
+	const float near_plane,
+	const float far_plane,
 	float* out_color,
 	float* depth,
 	bool antialiasing,
@@ -272,6 +279,8 @@ int CudaRasterizer::Rasterizer::forward(
 		tile_grid,
 		geomState.tiles_touched,
 		prefiltered,
+		near_plane,
+		far_plane,
 		antialiasing
 	), debug)
 
@@ -374,6 +383,8 @@ void CudaRasterizer::Rasterizer::backward(
 	float* dL_dsh,
 	float* dL_dscale,
 	float* dL_drot,
+	float near_plane,
+	float far_plane,
 	bool antialiasing,
 	bool debug)
 {
@@ -446,5 +457,7 @@ void CudaRasterizer::Rasterizer::backward(
 		dL_dsh,
 		(glm::vec3*)dL_dscale,
 		(glm::vec4*)dL_drot,
+		near_plane,
+		far_plane,
 		antialiasing), debug);
 }
