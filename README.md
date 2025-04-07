@@ -1,13 +1,10 @@
 # Differential Gaussian Rasterization
 
-Used as the rasterization engine for the paper "3D Gaussian Splatting for Real-Time Rendering of Radiance Fields". If you can make use of it in your own research, please be so kind to cite us.
+This is a fork of the rasterization engine for the paper "3D Gaussian Splatting for Real-Time Rendering of Radiance Fields". If you can make use of it in your own research, please be so kind to cite us.
 
 ## Modification
 
-### Modularize frustum culling
-The original rasterizer [hard-coded frustum culling](https://github.com/graphdeco-inria/diff-gaussian-rasterization/blob/9c5c2028f6fbee2be239bc4c9421ff894fe4fbe0/cuda_rasterizer/auxiliary.h#L166) by setting near plane = 0.2 and no far plane culling.
-
-To enable custom near plane and far plane, read doc/
+* Support custom near far culling
 
 
 <section class="section" id="BibTeX">
