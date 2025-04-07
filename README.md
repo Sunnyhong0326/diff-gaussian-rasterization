@@ -4,17 +4,10 @@ Used as the rasterization engine for the paper "3D Gaussian Splatting for Real-T
 
 ## Modification
 
-### Modularize Frustum culling
-The original rasterizer hard-codes frustum culling by setting near plane = 0.2 and no far plane.
+### Modularize frustum culling
+The original rasterizer [hard-coded frustum culling](https://github.com/graphdeco-inria/diff-gaussian-rasterization/blob/9c5c2028f6fbee2be239bc4c9421ff894fe4fbe0/cuda_rasterizer/auxiliary.h#L166) by setting near plane = 0.2 and no far plane culling.
 
-In [cuda_rasterizer/auxilary.h](https://github.com/graphdeco-inria/diff-gaussian-rasterization/blob/9c5c2028f6fbee2be239bc4c9421ff894fe4fbe0/cuda_rasterizer/auxiliary.h#L166): 
-```c++
-if (p_view.z <= 0.2f)
-{
-  ...
-  return false;
-}
-```
+To enable custom near plane and far plane, read doc/
 
 
 <section class="section" id="BibTeX">

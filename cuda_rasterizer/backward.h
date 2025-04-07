@@ -66,8 +66,6 @@ namespace BACKWARD
 		float* dL_dsh,
 		glm::vec3* dL_dscale,
 		glm::vec4* dL_drot,
-		float near_plane,
-		float far_plane,
 		bool antialiasing);
 }
 

@@ -64,8 +64,6 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor, torch::Te
 	const int R,
 	const torch::Tensor& binningBuffer,
 	const torch::Tensor& imageBuffer,
-	const float near_plane,
-	const float far_plane,
 	const bool antialiasing,
 	const bool debug);
 		

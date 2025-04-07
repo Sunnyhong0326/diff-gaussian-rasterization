@@ -90,8 +90,6 @@ namespace CudaRasterizer
 			float* dL_dsh,
 			float* dL_dscale,
 			float* dL_drot,
-			float near_plane,
-			float far_plane,
 			bool antialiasing,
 			bool debug);
 	};

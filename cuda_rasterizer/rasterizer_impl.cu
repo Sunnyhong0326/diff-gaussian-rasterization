@@ -383,8 +383,6 @@ void CudaRasterizer::Rasterizer::backward(
 	float* dL_dsh,
 	float* dL_dscale,
 	float* dL_drot,
-	float near_plane,
-	float far_plane,
 	bool antialiasing,
 	bool debug)
 {
@@ -457,7 +455,5 @@ void CudaRasterizer::Rasterizer::backward(
 		dL_dsh,
 		(glm::vec3*)dL_dscale,
 		(glm::vec4*)dL_drot,
-		near_plane,
-		far_plane,
 		antialiasing), debug);
 }

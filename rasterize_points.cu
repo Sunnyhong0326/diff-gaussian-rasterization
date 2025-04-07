@@ -151,8 +151,6 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor, torch::Te
 	const int R,
 	const torch::Tensor& binningBuffer,
 	const torch::Tensor& imageBuffer,
-	const float near_plane,
-	const float far_plane,
 	const bool antialiasing,
 	const bool debug)
 {
@@ -221,8 +219,6 @@ std::tuple<torch::Tensor, torch::Tensor, torch::Tensor, torch::Tensor, torch::Te
 	  dL_dsh.contiguous().data<float>(),
 	  dL_dscales.contiguous().data<float>(),
 	  dL_drotations.contiguous().data<float>(),
-	  near_plane,
-	  far_plane,
 	  antialiasing,
 	  debug);
   }
